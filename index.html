@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon">
+
     <title>trex Cloud Deneme Programı</title>
     <style>
         :root {
@@ -199,6 +201,13 @@
             margin-right: auto;
         }
 
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
         .cta-button {
             background: var(--accent-green);
             color: var(--white);
@@ -216,6 +225,18 @@
         .cta-button:hover {
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(139, 195, 74, 0.4);
+        }
+
+        .cta-button-secondary {
+            background: transparent;
+            color: var(--white);
+            border: 2px solid var(--white);
+        }
+
+        .cta-button-secondary:hover {
+            background: var(--white);
+            color: var(--primary-green);
+            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.3);
         }
 
         /* Features Section */
@@ -584,6 +605,11 @@
                 font-size: 1rem;
             }
 
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
             .form-row {
                 grid-template-columns: 1fr;
             }
@@ -637,7 +663,10 @@
                 <h1 data-tr="trex Cloud Deneme Programı" data-en="trex Cloud Trial Program" data-ru="Пробная программа trex Cloud" data-ar="برنامج تجريبي trex Cloud">trex Cloud Deneme Programı</h1>
                 <h2 data-tr="Akıllı Fabrika Dönüşümü" data-en="Smart Factory Transformation" data-ru="Трансформация умной фабрики" data-ar="تحول المصنع الذكي">Akıllı Fabrika Dönüşümü</h2>
                 <p data-tr="Düşük başlangıç yatırımı ile üretim süreçlerinizi dijitalleştirin. trex Cloud, verimliliğinizi artırırken daha doğru ve hızlı veri analizi yapmanızı sağlar. Bulut tabanlı altyapımız sayesinde fabrikanızı her yerden, her zaman yönetebilirsiniz." data-en="Digitize your production processes with low initial investment. trex Cloud increases your productivity while enabling more accurate and faster data analysis. Our cloud-based infrastructure allows you to manage your factory from anywhere, anytime." data-ru="Оцифруйте производственные процессы с низкими первоначальными инвестициями. trex Cloud повышает вашу производительность, обеспечивая более точный и быстрый анализ данных. Наша облачная инфраструктура позволяет управлять заводом откуда угодно и в любое время." data-ar="رقمن عمليات الإنتاج الخاصة بك باستثمار أولي منخفض. يزيد trex Cloud من إنتاجيتك مع تمكين تحليل بيانات أكثر دقة وسرعة. تسمح لك البنية التحتية السحابية بإدارة المصنع من أي مكان وفي أي وقت.">Düşük başlangıç yatırımı ile üretim süreçlerinizi dijitalleştirin. trex Cloud, verimliliğinizi artırırken daha doğru ve hızlı veri analizi yapmanızı sağlar. Bulut tabanlı altyapımız sayesinde fabrikanızı her yerden, her zaman yönetebilirsiniz.</p>
-                <a href="#application" class="cta-button" data-tr="Hemen Başvur" data-en="Apply Now" data-ru="Подать заявку сейчас" data-ar="قدم الآن">Hemen Başvur</a>
+                <div class="hero-buttons">
+                    <a href="#application" class="cta-button" data-tr="Hemen Başvur" data-en="Apply Now" data-ru="Подать заявку сейчас" data-ar="قدم الآن">Hemen Başvur</a>
+                    <a href="platform.html" class="cta-button cta-button-secondary" data-tr="Platform Detayları" data-en="Platform Details" data-ru="Подробности платформы" data-ar="تفاصيل المنصة">Platform Detayları</a>
+                </div>
             </div>
         </div>
     </section>
