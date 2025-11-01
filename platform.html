@@ -58,7 +58,7 @@
 
         .logo {
             height: 50px;
-            filter: brightness(0) invert(1);
+            cursor: pointer;
         }
 
         .nav-links {
@@ -76,6 +76,27 @@
 
         .nav-link:hover {
             color: var(--accent-green);
+        }
+
+        /* Mobile Menu Button */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--white);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-menu-btn:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .mobile-nav {
+            display: none;
         }
 
         .language-selector {
@@ -430,14 +451,64 @@
                 text-align: center;
             }
 
-            .nav-links {
-                flex-direction: column;
-                gap: 1rem;
+            .header-content {
+                justify-content: space-between;
+                align-items: center;
             }
-            
-            .language-selector {
-                margin-left: 0;
-                margin-top: 0.5rem;
+
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .mobile-nav {
+                display: block;
+                position: fixed;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background: var(--primary-green);
+                border-top: 1px solid rgba(255,255,255,0.2);
+                z-index: 999;
+                opacity: 0;
+                visibility: hidden;
+                transform: translateY(-20px);
+                transition: all 0.3s ease;
+            }
+
+            .mobile-nav.show {
+                opacity: 1;
+                visibility: visible;
+                transform: translateY(0);
+            }
+
+            .mobile-nav-links {
+                display: flex;
+                flex-direction: column;
+                padding: 1rem 0;
+            }
+
+            .mobile-nav-links .nav-link {
+                padding: 1rem 2rem;
+                border-bottom: 1px solid rgba(255,255,255,0.1);
+                display: block;
+            }
+
+            .mobile-nav-links .nav-link:last-child {
+                border-bottom: none;
+            }
+
+            .mobile-nav-links .nav-link:hover {
+                background: rgba(255,255,255,0.1);
+                color: var(--accent-green);
+            }
+
+            .mobile-language-selector {
+                padding: 1rem 2rem;
+                border-top: 1px solid rgba(255,255,255,0.2);
             }
 
             .features-grid {
@@ -473,7 +544,9 @@
     <header class="header">
         <div class="container">
             <div class="header-content">
-                <img src="img/logo.png" alt="trex Logo" class="logo">
+                <img src="img/logo.png" alt="trex Logo" class="logo" onclick="window.location.href='index.html'">
+                
+                <!-- Desktop Navigation -->
                 <div class="nav-links">
                     <a href="index.html" class="nav-link" data-tr="Ana Sayfa" data-en="Home" data-ru="Главная" data-ar="الرئيسية">Ana Sayfa</a>
                     <a href="#platform" class="nav-link" data-tr="Platform" data-en="Platform" data-ru="Платформа" data-ar="المنصة">Platform</a>
@@ -484,6 +557,34 @@
                             <span id="currentLang">TR</span>
                         </div>
                         <div class="lang-dropdown-menu" id="langDropdownMenu">
+                            <button class="lang-option active" data-lang="tr">🇹🇷 Türkçe</button>
+                            <button class="lang-option" data-lang="en">🇺🇸 English</button>
+                            <button class="lang-option" data-lang="ru">🇷🇺 Русский</button>
+                            <button class="lang-option" data-lang="ar">🇸🇦 العربية</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">☰</button>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation -->
+        <div class="mobile-nav" id="mobileNav">
+            <div class="container">
+                <div class="mobile-nav-links">
+                    <a href="index.html" class="nav-link" data-tr="Ana Sayfa" data-en="Home" data-ru="Главная" data-ar="الرئيسية">Ana Sayfa</a>
+                    <a href="#platform" class="nav-link" data-tr="Platform" data-en="Platform" data-ru="Платформа" data-ar="المنصة">Platform</a>
+                    <a href="#features" class="nav-link" data-tr="Özellikler" data-en="Features" data-ru="Возможности" data-ar="الميزات">Özellikler</a>
+                    <a href="#contact" class="nav-link" data-tr="İletişim" data-en="Contact" data-ru="Контакт" data-ar="اتصال">İletişim</a>
+                </div>
+                <div class="mobile-language-selector">
+                    <div class="language-selector">
+                        <div class="lang-dropdown" id="mobileLangDropdown">
+                            <span id="mobileCurrentLang">TR</span>
+                        </div>
+                        <div class="lang-dropdown-menu" id="mobileLangDropdownMenu">
                             <button class="lang-option active" data-lang="tr">🇹🇷 Türkçe</button>
                             <button class="lang-option" data-lang="en">🇺🇸 English</button>
                             <button class="lang-option" data-lang="ru">🇷🇺 Русский</button>
@@ -696,6 +797,9 @@
         function switchLanguage(lang) {
             currentLanguage = lang;
             
+            // Save language preference to localStorage
+            localStorage.setItem('trex-language', lang);
+            
             // Update document title
             document.title = translations[lang].title;
             
@@ -744,39 +848,105 @@
         });
 
         // Close dropdown when clicking outside
-        document.addEventListener('click', () => {
-            langDropdown.classList.remove('active');
-            langDropdownMenu.classList.remove('show');
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.language-selector')) {
+                langDropdown.classList.remove('active');
+                langDropdownMenu.classList.remove('show');
+                // Also close mobile dropdown
+                if (document.getElementById('mobileLangDropdown')) {
+                    document.getElementById('mobileLangDropdown').classList.remove('active');
+                    document.getElementById('mobileLangDropdownMenu').classList.remove('show');
+                }
+            }
         });
 
-        // Language option selection
+        // Language option selection for both desktop and mobile
         document.querySelectorAll('.lang-option').forEach(button => {
             button.addEventListener('click', (e) => {
                 e.stopPropagation();
                 const lang = e.target.getAttribute('data-lang');
-                const langText = e.target.textContent;
                 
-                // Update current language display
+                // Update current language display (desktop)
                 currentLangSpan.textContent = lang.toUpperCase();
                 
-                // Update active state
+                // Update active state for all language options
                 document.querySelectorAll('.lang-option').forEach(opt => opt.classList.remove('active'));
-                e.target.classList.add('active');
+                document.querySelectorAll(`[data-lang="${lang}"]`).forEach(opt => opt.classList.add('active'));
                 
                 // Switch language
                 switchLanguage(lang);
                 
-                // Close dropdown
+                // Close both dropdowns
                 langDropdown.classList.remove('active');
                 langDropdownMenu.classList.remove('show');
+                if (document.getElementById('mobileLangDropdown')) {
+                    document.getElementById('mobileLangDropdown').classList.remove('active');
+                    document.getElementById('mobileLangDropdownMenu').classList.remove('show');
+                }
             });
         });
 
         // Set dynamic copyright year
         document.getElementById('copyright-year').textContent = new Date().getFullYear();
 
-        // Initialize with Turkish
-        switchLanguage('tr');
+        // Load saved language preference or default to Turkish
+        const savedLanguage = localStorage.getItem('trex-language') || 'tr';
+        switchLanguage(savedLanguage);
+
+        // Mobile Menu Functionality
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileNav = document.getElementById('mobileNav');
+        const mobileLangDropdown = document.getElementById('mobileLangDropdown');
+        const mobileLangDropdownMenu = document.getElementById('mobileLangDropdownMenu');
+        const mobileCurrentLangSpan = document.getElementById('mobileCurrentLang');
+
+        // Toggle mobile menu
+        mobileMenuBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            mobileNav.classList.toggle('show');
+            // Update hamburger icon
+            mobileMenuBtn.textContent = mobileNav.classList.contains('show') ? '✕' : '☰';
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.mobile-nav') && !e.target.closest('.mobile-menu-btn')) {
+                mobileNav.classList.remove('show');
+                mobileMenuBtn.textContent = '☰';
+            }
+        });
+
+        // Close mobile menu when clicking nav links
+        document.querySelectorAll('.mobile-nav-links .nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileNav.classList.remove('show');
+                mobileMenuBtn.textContent = '☰';
+            });
+        });
+
+        // Mobile language dropdown functionality
+        mobileLangDropdown.addEventListener('click', (e) => {
+            e.stopPropagation();
+            mobileLangDropdown.classList.toggle('active');
+            mobileLangDropdownMenu.classList.toggle('show');
+        });
+
+        // Sync mobile language selector with main language selector
+        const originalSwitchLanguage = switchLanguage;
+        switchLanguage = function(lang) {
+            originalSwitchLanguage(lang);
+            // Update mobile current language display
+            if (mobileCurrentLangSpan) {
+                mobileCurrentLangSpan.textContent = lang.toUpperCase();
+            }
+            // Update mobile active state
+            document.querySelectorAll('#mobileLangDropdownMenu .lang-option').forEach(opt => {
+                opt.classList.remove('active');
+                if (opt.getAttribute('data-lang') === lang) {
+                    opt.classList.add('active');
+                }
+            });
+        };
 
         // Smooth scrolling for navigation links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {

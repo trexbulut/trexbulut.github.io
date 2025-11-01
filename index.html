@@ -59,7 +59,6 @@
 
         .logo {
             height: 50px;
-            filter: brightness(0) invert(1);
         }
 
         .language-selector {
@@ -152,6 +151,50 @@
 
         .lang-option:last-child {
             border-radius: 0 0 5px 5px;
+        }
+
+        /* Navigation Links */
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: var(--white);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-link:hover {
+            color: var(--accent-green);
+        }
+
+        /* Mobile Menu Button */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--white);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-menu-btn:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .mobile-nav {
+            display: none;
+        }
+
+        /* Logo as clickable link */
+        .logo {
+            cursor: pointer;
         }
 
         /* Hero Section */
@@ -615,8 +658,63 @@
             }
 
             .header-content {
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .mobile-nav {
+                display: block;
+                position: fixed;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background: var(--primary-green);
+                border-top: 1px solid rgba(255,255,255,0.2);
+                z-index: 999;
+                opacity: 0;
+                visibility: hidden;
+                transform: translateY(-20px);
+                transition: all 0.3s ease;
+            }
+
+            .mobile-nav.show {
+                opacity: 1;
+                visibility: visible;
+                transform: translateY(0);
+            }
+
+            .mobile-nav-links {
+                display: flex;
                 flex-direction: column;
-                gap: 1rem;
+                padding: 1rem 0;
+            }
+
+            .mobile-nav-links .nav-link {
+                padding: 1rem 2rem;
+                border-bottom: 1px solid rgba(255,255,255,0.1);
+                display: block;
+            }
+
+            .mobile-nav-links .nav-link:last-child {
+                border-bottom: none;
+            }
+
+            .mobile-nav-links .nav-link:hover {
+                background: rgba(255,255,255,0.1);
+                color: var(--accent-green);
+            }
+
+            .mobile-language-selector {
+                padding: 1rem 2rem;
+                border-top: 1px solid rgba(255,255,255,0.2);
             }
         }
 
@@ -640,16 +738,52 @@
     <header class="header">
         <div class="container">
             <div class="header-content">
-                <img src="img/logo.png" alt="trex Logo" class="logo">
-                <div class="language-selector">
-                    <div class="lang-dropdown" id="langDropdown">
-                        <span id="currentLang">TR</span>
+                <img src="img/logo.png" alt="trex Logo" class="logo" onclick="window.location.href='index.html'">
+                
+                <!-- Desktop Navigation -->
+                <div class="nav-links">
+                    <a href="#features" class="nav-link" data-tr="Avantajlar" data-en="Advantages" data-ru="Преимущества" data-ar="المزايا">Avantajlar</a>
+                    <a href="#process" class="nav-link" data-tr="Nasıl Çalışır?" data-en="How It Works?" data-ru="Как это работает?" data-ar="كيف يعمل؟">Nasıl Çalışır?</a>
+                    <a href="#digital-transformation" class="nav-link" data-tr="Dijital Dönüşüm" data-en="Digital Transformation" data-ru="Цифровая трансформация" data-ar="التحول الرقمي">Dijital Dönüşüm</a>
+                    <a href="#application" class="nav-link" data-tr="Başvuru" data-en="Apply" data-ru="Заявка" data-ar="تطبيق">Başvuru</a>
+                    <div class="language-selector">
+                        <div class="lang-dropdown" id="langDropdown">
+                            <span id="currentLang">TR</span>
+                        </div>
+                        <div class="lang-dropdown-menu" id="langDropdownMenu">
+                            <button class="lang-option active" data-lang="tr">🇹🇷 Türkçe</button>
+                            <button class="lang-option" data-lang="en">🇺🇸 English</button>
+                            <button class="lang-option" data-lang="ru">🇷🇺 Русский</button>
+                            <button class="lang-option" data-lang="ar">🇸🇦 العربية</button>
+                        </div>
                     </div>
-                    <div class="lang-dropdown-menu" id="langDropdownMenu">
-                        <button class="lang-option active" data-lang="tr">🇹🇷 Türkçe</button>
-                        <button class="lang-option" data-lang="en">🇺🇸 English</button>
-                        <button class="lang-option" data-lang="ru">🇷🇺 Русский</button>
-                        <button class="lang-option" data-lang="ar">🇸🇦 العربية</button>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">☰</button>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation -->
+        <div class="mobile-nav" id="mobileNav">
+            <div class="container">
+                <div class="mobile-nav-links">
+                    <a href="#features" class="nav-link" data-tr="Avantajlar" data-en="Advantages" data-ru="Преимущества" data-ar="المزايا">Avantajlar</a>
+                    <a href="#process" class="nav-link" data-tr="Nasıl Çalışır?" data-en="How It Works?" data-ru="Как это работает?" data-ar="كيف يعمل؟">Nasıl Çalışır?</a>
+                    <a href="#digital-transformation" class="nav-link" data-tr="Dijital Dönüşüm" data-en="Digital Transformation" data-ru="Цифровая трансформация" data-ar="التحول الرقمي">Dijital Dönüşüm</a>
+                    <a href="#application" class="nav-link" data-tr="Başvuru" data-en="Apply" data-ru="Заявка" data-ar="تطبيق">Başvuru</a>
+                </div>
+                <div class="mobile-language-selector">
+                    <div class="language-selector">
+                        <div class="lang-dropdown" id="mobileLangDropdown">
+                            <span id="mobileCurrentLang">TR</span>
+                        </div>
+                        <div class="lang-dropdown-menu" id="mobileLangDropdownMenu">
+                            <button class="lang-option active" data-lang="tr">🇹🇷 Türkçe</button>
+                            <button class="lang-option" data-lang="en">🇺🇸 English</button>
+                            <button class="lang-option" data-lang="ru">🇷🇺 Русский</button>
+                            <button class="lang-option" data-lang="ar">🇸🇦 العربية</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -672,7 +806,7 @@
     </section>
 
     <!-- Features Section -->
-    <section class="features">
+    <section class="features" id="features">
         <div class="container">
             <h2 class="section-title" data-tr="Program Avantajları" data-en="Program Benefits" data-ru="Преимущества программы" data-ar="مزايا البرنامج">Program Avantajları</h2>
             <div class="features-grid">
@@ -696,7 +830,7 @@
     </section>
 
     <!-- Process Section -->
-    <section class="process">
+    <section class="process" id="process">
         <div class="container">
             <h2 class="section-title" data-tr="Nasıl Çalışır?" data-en="How It Works?" data-ru="Как это работает?" data-ar="كيف يعمل؟">Nasıl Çalışır?</h2>
             <div class="process-steps">
@@ -725,7 +859,7 @@
     </section>
 
     <!-- Digital Transformation Section -->
-    <section class="digital-transformation">
+    <section class="digital-transformation" id="digital-transformation">
         <div class="container">
             <div class="transformation-content">
                 <div class="transformation-text">
@@ -879,6 +1013,9 @@
         function switchLanguage(lang) {
             currentLanguage = lang;
             
+            // Save language preference to localStorage
+            localStorage.setItem('trex-language', lang);
+            
             // Update document title
             document.title = translations[lang].title;
             
@@ -938,31 +1075,41 @@
         });
 
         // Close dropdown when clicking outside
-        document.addEventListener('click', () => {
-            langDropdown.classList.remove('active');
-            langDropdownMenu.classList.remove('show');
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.language-selector')) {
+                langDropdown.classList.remove('active');
+                langDropdownMenu.classList.remove('show');
+                // Also close mobile dropdown
+                if (document.getElementById('mobileLangDropdown')) {
+                    document.getElementById('mobileLangDropdown').classList.remove('active');
+                    document.getElementById('mobileLangDropdownMenu').classList.remove('show');
+                }
+            }
         });
 
-        // Language option selection
+        // Language option selection for both desktop and mobile
         document.querySelectorAll('.lang-option').forEach(button => {
             button.addEventListener('click', (e) => {
                 e.stopPropagation();
                 const lang = e.target.getAttribute('data-lang');
-                const langText = e.target.textContent;
                 
-                // Update current language display
+                // Update current language display (desktop)
                 currentLangSpan.textContent = lang.toUpperCase();
                 
-                // Update active state
+                // Update active state for all language options
                 document.querySelectorAll('.lang-option').forEach(opt => opt.classList.remove('active'));
-                e.target.classList.add('active');
+                document.querySelectorAll(`[data-lang="${lang}"]`).forEach(opt => opt.classList.add('active'));
                 
                 // Switch language
                 switchLanguage(lang);
                 
-                // Close dropdown
+                // Close both dropdowns
                 langDropdown.classList.remove('active');
                 langDropdownMenu.classList.remove('show');
+                if (document.getElementById('mobileLangDropdown')) {
+                    document.getElementById('mobileLangDropdown').classList.remove('active');
+                    document.getElementById('mobileLangDropdownMenu').classList.remove('show');
+                }
             });
         });
 
@@ -1223,20 +1370,86 @@
             }
         }
 
-        // Update placeholder text when language changes
+        // Mobile Menu Functionality
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileNav = document.getElementById('mobileNav');
+        const mobileLangDropdown = document.getElementById('mobileLangDropdown');
+        const mobileLangDropdownMenu = document.getElementById('mobileLangDropdownMenu');
+        const mobileCurrentLangSpan = document.getElementById('mobileCurrentLang');
+
+        // Toggle mobile menu
+        if (mobileMenuBtn) {
+            mobileMenuBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                mobileNav.classList.toggle('show');
+                // Update hamburger icon
+                mobileMenuBtn.textContent = mobileNav.classList.contains('show') ? '✕' : '☰';
+            });
+        }
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.mobile-nav') && !e.target.closest('.mobile-menu-btn')) {
+                if (mobileNav) {
+                    mobileNav.classList.remove('show');
+                }
+                if (mobileMenuBtn) {
+                    mobileMenuBtn.textContent = '☰';
+                }
+            }
+        });
+
+        // Close mobile menu when clicking nav links
+        document.querySelectorAll('.mobile-nav-links .nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                if (mobileNav) {
+                    mobileNav.classList.remove('show');
+                }
+                if (mobileMenuBtn) {
+                    mobileMenuBtn.textContent = '☰';
+                }
+            });
+        });
+
+        // Mobile language dropdown functionality
+        if (mobileLangDropdown) {
+            mobileLangDropdown.addEventListener('click', (e) => {
+                e.stopPropagation();
+                mobileLangDropdown.classList.toggle('active');
+                mobileLangDropdownMenu.classList.toggle('show');
+            });
+        }
+
+        // Enhanced switchLanguage function to handle mobile menu and placeholder updates
         const originalSwitchLanguage = switchLanguage;
         switchLanguage = function(lang) {
             originalSwitchLanguage(lang);
+            
+            // Update placeholder text when language changes
             if (selectedProtocols.length === 0) {
                 updateDisplayText();
             }
+            
+            // Update mobile current language display
+            if (mobileCurrentLangSpan) {
+                mobileCurrentLangSpan.textContent = lang.toUpperCase();
+            }
+            
+            // Update mobile active state
+            document.querySelectorAll('#mobileLangDropdownMenu .lang-option').forEach(opt => {
+                opt.classList.remove('active');
+                if (opt.getAttribute('data-lang') === lang) {
+                    opt.classList.add('active');
+                }
+            });
         };
 
         // Set dynamic copyright year
         document.getElementById('copyright-year').textContent = new Date().getFullYear();
 
-        // Initialize with Turkish
-        switchLanguage('tr');
+        // Load saved language preference or default to Turkish
+        const savedLanguage = localStorage.getItem('trex-language') || 'tr';
+        switchLanguage(savedLanguage);
     </script>
   
 </body>
