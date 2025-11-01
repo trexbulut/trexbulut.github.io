@@ -1,0 +1,1214 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>trex Cloud Deneme Programı</title>
+    <style>
+        :root {
+            --primary-green: #071f11;
+            --secondary-green: #4a7c59;
+            --light-green: #0A923F;
+            --accent-green: #8bc34a;
+            --dark-green: #1a3d2e;
+            --light-gray: #f5f5f5;
+            --medium-gray: #e0e0e0;
+            --dark-gray: #333;
+            --white: #ffffff;
+            --text-dark: #2c2c2c;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        .header {
+            background: var(--primary-green);
+            color: var(--white);
+            padding: 1rem 0;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            height: 50px;
+            filter: brightness(0) invert(1);
+        }
+
+        .language-selector {
+            position: relative;
+            display: inline-block;
+        }
+
+        .lang-dropdown {
+            background: rgba(255,255,255,0.2);
+            color: var(--white);
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 8px 35px 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            min-width: 80px;
+            position: relative;
+        }
+
+        .lang-dropdown:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .lang-dropdown::after {
+            content: '▼';
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.7rem;
+            transition: transform 0.3s ease;
+        }
+
+        .lang-dropdown.active::after {
+            transform: translateY(-50%) rotate(180deg);
+        }
+
+        .lang-dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: var(--white);
+            border: 1px solid var(--medium-gray);
+            border-radius: 5px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            z-index: 1001;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            margin-top: 5px;
+            min-width: 140px;
+            white-space: nowrap;
+        }
+
+        .lang-dropdown-menu.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .lang-option {
+            display: block;
+            padding: 12px 16px;
+            color: var(--text-dark);
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+
+        .lang-option:hover {
+            background: var(--light-gray);
+        }
+
+        .lang-option.active {
+            background: var(--primary-green);
+            color: var(--white);
+        }
+
+        .lang-option:first-child {
+            border-radius: 5px 5px 0 0;
+        }
+
+        .lang-option:last-child {
+            border-radius: 0 0 5px 5px;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--dark-green) 0%, var(--primary-green) 50%, var(--secondary-green) 100%);
+            color: var(--white);
+            padding: 150px 0 100px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="rgba(255,255,255,0.1)"/><circle cx="80" cy="80" r="2" fill="rgba(255,255,255,0.1)"/><circle cx="60" cy="30" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="30" cy="70" r="1" fill="rgba(255,255,255,0.1)"/></svg>');
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .hero h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            font-weight: 400;
+            opacity: 0.9;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-button {
+            background: var(--accent-green);
+            color: var(--white);
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(139, 195, 74, 0.4);
+        }
+
+        /* Features Section */
+        .features {
+            padding: 100px 0;
+            background: var(--light-gray);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: var(--primary-green);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .feature-card {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--accent-green);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 1.5rem;
+            color: var(--white);
+        }
+
+        .feature-card h3 {
+            color: var(--primary-green);
+            margin-bottom: 1rem;
+        }
+
+        /* Process Section */
+        .process {
+            padding: 100px 0;
+            background: var(--white);
+        }
+
+        .process-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .process-step {
+            text-align: center;
+            position: relative;
+        }
+
+        .step-number {
+            width: 50px;
+            height: 50px;
+            background: var(--secondary-green);
+            color: var(--white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .process-step h3 {
+            color: var(--primary-green);
+            margin-bottom: 1rem;
+        }
+
+        /* Digital Transformation Section */
+        .digital-transformation {
+            padding: 100px 0;
+            background: linear-gradient(135deg, var(--primary-green) 0%, var(--dark-green) 100%);
+            color: var(--white);
+        }
+
+        .transformation-content h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: var(--white);
+        }
+
+        .transformation-text {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .transformation-text p {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            margin-bottom: 3rem;
+            opacity: 0.9;
+        }
+
+        .transformation-features {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        @media (max-width: 768px) {
+            .transformation-features {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 1024px) and (min-width: 769px) {
+            .transformation-features {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .transformation-feature {
+            text-align: center;
+            padding: 1.5rem;
+        }
+
+        .transform-icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 1.5rem;
+        }
+
+        .transformation-feature h4 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--accent-green);
+        }
+
+        .transformation-feature p {
+            font-size: 0.95rem;
+            opacity: 0.8;
+            margin: 0;
+        }
+
+        /* Application Form */
+        .application {
+            padding: 100px 0;
+            background: linear-gradient(135deg, var(--light-green) 0%, var(--secondary-green) 100%);
+            color: var(--white);
+        }
+
+        .form-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: var(--white);
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .form-container h2 {
+            color: var(--primary-green);
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--medium-gray);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent-green);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        /* Multi-select Protocol Dropdown */
+        .multi-select-container {
+            position: relative;
+        }
+
+        .multi-select-display {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            min-height: 48px;
+        }
+
+        .multi-select-display.active {
+            border-color: var(--accent-green);
+        }
+
+        .dropdown-arrow {
+            transition: transform 0.3s ease;
+            color: var(--dark-gray);
+        }
+
+        .multi-select-display.active .dropdown-arrow {
+            transform: rotate(180deg);
+        }
+
+        .multi-select-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: var(--white);
+            border: 2px solid var(--medium-gray);
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .multi-select-dropdown.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .protocol-option {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        .protocol-option:last-child {
+            border-bottom: none;
+        }
+
+        .protocol-option:hover {
+            background-color: var(--light-gray);
+        }
+
+        .protocol-option input[type="checkbox"] {
+            margin-right: 10px;
+            accent-color: var(--accent-green);
+        }
+
+        .protocol-option span {
+            flex: 1;
+            font-size: 0.95rem;
+        }
+
+        .selected-protocols {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .protocol-tag {
+            background: var(--accent-green);
+            color: var(--white);
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .protocol-tag .remove {
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .placeholder {
+            color: #999;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: var(--primary-green);
+            color: var(--white);
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background: var(--secondary-green);
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--dark-green);
+            color: var(--white);
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        .footer a {
+            color: var(--accent-green);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer a:hover {
+            color: var(--white);
+            text-decoration: underline;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+
+        /* Hidden class for language switching */
+        .hidden {
+            display: none !important;
+        }
+
+        /* RTL Support for Arabic */
+        [dir="rtl"] {
+            text-align: right;
+        }
+
+        [dir="rtl"] .hero {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <img src="img/logo.png" alt="trex Logo" class="logo">
+                <div class="language-selector">
+                    <div class="lang-dropdown" id="langDropdown">
+                        <span id="currentLang">TR</span>
+                    </div>
+                    <div class="lang-dropdown-menu" id="langDropdownMenu">
+                        <button class="lang-option active" data-lang="tr">🇹🇷 Türkçe</button>
+                        <button class="lang-option" data-lang="en">🇺🇸 English</button>
+                        <button class="lang-option" data-lang="ru">🇷🇺 Русский</button>
+                        <button class="lang-option" data-lang="ar">🇸🇦 العربية</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1 data-tr="trex Cloud Deneme Programı" data-en="trex Cloud Trial Program" data-ru="Пробная программа trex Cloud" data-ar="برنامج تجريبي trex Cloud">trex Cloud Deneme Programı</h1>
+                <h2 data-tr="Akıllı Fabrika Dönüşümü" data-en="Smart Factory Transformation" data-ru="Трансформация умной фабрики" data-ar="تحول المصنع الذكي">Akıllı Fabrika Dönüşümü</h2>
+                <p data-tr="Düşük başlangıç yatırımı ile üretim süreçlerinizi dijitalleştirin. trex Cloud, verimliliğinizi artırırken daha doğru ve hızlı veri analizi yapmanızı sağlar. Bulut tabanlı altyapımız sayesinde fabrikanızı her yerden, her zaman yönetebilirsiniz." data-en="Digitize your production processes with low initial investment. trex Cloud increases your productivity while enabling more accurate and faster data analysis. Our cloud-based infrastructure allows you to manage your factory from anywhere, anytime." data-ru="Оцифруйте производственные процессы с низкими первоначальными инвестициями. trex Cloud повышает вашу производительность, обеспечивая более точный и быстрый анализ данных. Наша облачная инфраструктура позволяет управлять заводом откуда угодно и в любое время." data-ar="رقمن عمليات الإنتاج الخاصة بك باستثمار أولي منخفض. يزيد trex Cloud من إنتاجيتك مع تمكين تحليل بيانات أكثر دقة وسرعة. تسمح لك البنية التحتية السحابية بإدارة المصنع من أي مكان وفي أي وقت.">Düşük başlangıç yatırımı ile üretim süreçlerinizi dijitalleştirin. trex Cloud, verimliliğinizi artırırken daha doğru ve hızlı veri analizi yapmanızı sağlar. Bulut tabanlı altyapımız sayesinde fabrikanızı her yerden, her zaman yönetebilirsiniz.</p>
+                <a href="#application" class="cta-button" data-tr="Hemen Başvur" data-en="Apply Now" data-ru="Подать заявку сейчас" data-ar="قدم الآن">Hemen Başvur</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <h2 class="section-title" data-tr="Program Avantajları" data-en="Program Benefits" data-ru="Преимущества программы" data-ar="مزايا البرنامج">Program Avantajları</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3 data-tr="Hızlı Kurulum" data-en="Quick Setup" data-ru="Быстрая установка" data-ar="إعداد سريع">Hızlı Kurulum</h3>
+                    <p data-tr="Kurulumdan 1 saat sonra kendi makinenizi bulutta görün." data-en="See your own machine in the cloud 1 hour after installation." data-ru="Увидьте свою машину в облаке через 1 час после установки." data-ar="اعرض آلتك في السحابة بعد ساعة واحدة من التثبيت.">Kurulumdan 1 saat sonra kendi makinenizi bulutta görün.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3 data-tr="Gerçek Zamanlı Veri" data-en="Real-time Data" data-ru="Данные в реальном времени" data-ar="بيانات في الوقت الفعلي">Gerçek Zamanlı Veri</h3>
+                    <p data-tr="OEE analizi, makine durumları ve üretim verilerini canlı takip edin." data-en="Monitor OEE analysis, machine status, and production data live." data-ru="Отслеживайте анализ OEE, статус оборудования и производственные данные в режиме реального времени." data-ar="راقب تحليل OEE وحالة الآلة وبيانات الإنتاج مباشرة.">OEE analizi, makine durumları ve üretim verilerini canlı takip edin.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💰</div>
+                    <h3 data-tr="Sıfır Risk" data-en="Zero Risk" data-ru="Нулевой риск" data-ar="مخاطر صفرية">Sıfır Risk</h3>
+                    <p data-tr="1 yıl boyunca ücretsiz deneyim, hiçbir yatırım gerektirmez." data-en="1 year free experience, no investment required." data-ru="1 год бесплатного опыта, никаких инвестиций не требуется." data-ar="تجربة مجانية لمدة عام واحد، لا تتطلب أي استثمار.">1 yıl boyunca ücretsiz deneyim, hiçbir yatırım gerektirmez.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process Section -->
+    <section class="process">
+        <div class="container">
+            <h2 class="section-title" data-tr="Nasıl Çalışır?" data-en="How It Works?" data-ru="Как это работает?" data-ar="كيف يعمل؟">Nasıl Çalışır?</h2>
+            <div class="process-steps">
+                <div class="process-step">
+                    <div class="step-number">1</div>
+                    <h3 data-tr="Başvuru" data-en="Application" data-ru="Заявка" data-ar="التطبيق">Başvuru</h3>
+                    <p data-tr="Formu doldurun, ekibimiz sizinle iletişime geçsin." data-en="Fill out the form, our team will contact you." data-ru="Заполните форму, наша команда свяжется с вами." data-ar="املأ النموذج، سيتواصل معك فريقنا.">Formu doldurun, ekibimiz sizinle iletişime geçsin.</p>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">2</div>
+                    <h3 data-tr="Uyumluluk Kontrolü" data-en="Compatibility Check" data-ru="Проверка совместимости" data-ar="فحص التوافق">Uyumluluk Kontrolü</h3>
+                    <p data-tr="Makine ve protokol uygunluğunu kontrol edelim." data-en="We check machine and protocol compatibility." data-ru="Мы проверяем совместимость машины и протокола." data-ar="نتحقق من توافق الآلة والبروتوكول.">Makine ve protokol uygunluğunu kontrol edelim.</p>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">3</div>
+                    <h3 data-tr="Kurulum" data-en="Installation" data-ru="Установка" data-ar="التثبيت">Kurulum</h3>
+                    <p data-tr="Uzaktan erişimle veri toplama servislerini kuralım." data-en="We install data collection services via remote access." data-ru="Мы устанавливаем службы сбора данных через удаленный доступ." data-ar="نقوم بتثبيت خدمات جمع البيانات عبر الوصول عن بُعد.">Uzaktan erişimle veri toplama servislerini kuralım.</p>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">4</div>
+                    <h3 data-tr="İzleme" data-en="Monitoring" data-ru="Мониторинг" data-ar="المراقبة">İzleme</h3>
+                    <p data-tr="Web veya mobil uygulamadan verilerinizi takip edin." data-en="Monitor your data from web or mobile app." data-ru="Отслеживайте свои данные через веб или мобильное приложение." data-ar="راقب بياناتك من تطبيق الويب أو الهاتف المحمول.">Web veya mobil uygulamadan verilerinizi takip edin.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Digital Transformation Section -->
+    <section class="digital-transformation">
+        <div class="container">
+            <div class="transformation-content">
+                <div class="transformation-text">
+                    <h2 data-tr="Üretiminizi Dijital Dünyaya Taşıyın" data-en="Bring Your Production to the Digital World" data-ru="Перенесите свое производство в цифровой мир" data-ar="انقل إنتاجك إلى العالم الرقمي">Üretiminizi Dijital Dünyaya Taşıyın</h2>
+                    <p data-tr="trex Cloud, IoT ve bulut tabanlı bir MES/MOM sistemidir. Üretimin her aşamasını gerçek zamanlı olarak izlemenizi sağlar. Tüm makinelerinizi bağlayarak üretim hattınızı dijitalleştirin, kağıtsız fabrikaya geçiş yapın ve üretim kalitenizi artırın." data-en="trex Cloud is an IoT and cloud-based MES/MOM system that allows you to monitor every stage of production in real time. By connecting all your machines, digitize your production line, transition to a paperless factory and improve production quality." data-ru="trex Cloud — это IoT и облачная система MES/MOM, которая позволяет отслеживать каждый этап производства в режиме реального времени. Подключив все ваши машины, оцифруйте производственную линию, перейдите к безбумажной фабрике и повысьте качество производства." data-ar="trex Cloud هو نظام MES/MOM قائم على إنترنت الأشياء والسحابة يتيح لك مراقبة كل مرحلة من مراحل الإنتاج في الوقت الفعلي. من خلال ربط جميع آلاتك، رقمن خط الإنتاج الخاص بك، وانتقل إلى مصنع بلا ورق وحسّن جودة الإنتاج.">trex Cloud, IoT ve bulut tabanlı bir MES/MOM sistemidir. Üretimin her aşamasını gerçek zamanlı olarak izlemenizi sağlar. Tüm makinelerinizi bağlayarak üretim hattınızı dijitalleştirin, kağıtsız fabrikaya geçiş yapın ve üretim kalitenizi artırın.</p>
+                    
+                    <div class="transformation-features">
+                        <div class="transformation-feature">
+                            <div class="transform-icon">🏭</div>
+                            <h4 data-tr="Gerçek Zamanlı İzleme" data-en="Real-Time Monitoring" data-ru="Мониторинг в реальном времени" data-ar="مراقبة في الوقت الفعلي">Gerçek Zamanlı İzleme</h4>
+                            <p data-tr="Üretimin her aşamasını anlık takip edin" data-en="Monitor every stage of production instantly" data-ru="Мгновенно отслеживайте каждый этап производства" data-ar="راقب كل مرحلة من مراحل الإنتاج على الفور">Üretimin her aşamasını anlık takip edin</p>
+                        </div>
+                        <div class="transformation-feature">
+                            <div class="transform-icon">🔗</div>
+                            <h4 data-tr="Makine Bağlantısı" data-en="Machine Connectivity" data-ru="Подключение машин" data-ar="اتصال الآلة">Makine Bağlantısı</h4>
+                            <p data-tr="Tüm makinelerinizi tek platformda birleştirin" data-en="Unite all your machines on a single platform" data-ru="Объедините все ваши машины на одной платформе" data-ar="وحّد جميع آلاتك على منصة واحدة">Tüm makinelerinizi tek platformda birleştirin</p>
+                        </div>
+                        <div class="transformation-feature">
+                            <div class="transform-icon">📄</div>
+                            <h4 data-tr="Kağıtsız Fabrika" data-en="Paperless Factory" data-ru="Безбумажная фабрика" data-ar="مصنع بلا ورق">Kağıtsız Fabrika</h4>
+                            <p data-tr="Dijital süreçlerle verimliliği artırın" data-en="Increase efficiency with digital processes" data-ru="Повысьте эффективность с помощью цифровых процессов" data-ar="زد الكفاءة بالعمليات الرقمية">Dijital süreçlerle verimliliği artırın</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Application Form -->
+    <section class="application" id="application">
+        <div class="container">
+            <div class="form-container">
+                <h2 data-tr="Deneme Programına Başvuru" data-en="Trial Program Application" data-ru="Заявка на участие в пробной программе" data-ar="تطبيق برنامج تجريبي">Deneme Programına Başvuru</h2>
+                <form id="applicationForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label data-tr="Firma Adı" data-en="Company Name" data-ru="Название компании" data-ar="اسم الشركة">Firma Adı</label>
+                            <input type="text" class="form-control" name="company" required>
+                        </div>
+                        <div class="form-group">
+                            <label data-tr="Sektör" data-en="Industry" data-ru="Отрасль" data-ar="الصناعة">Sektör</label>
+                            <input type="text" class="form-control" name="industry" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label data-tr="İletişim Kişisi" data-en="Contact Person" data-ru="Контактное лицо" data-ar="شخص الاتصال">İletişim Kişisi</label>
+                            <input type="text" class="form-control" name="contact" required>
+                        </div>
+                        <div class="form-group">
+                            <label data-tr="Telefon" data-en="Phone" data-ru="Телефон" data-ar="الهاتف">Telefon</label>
+                            <input type="tel" class="form-control" name="phone" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label data-tr="E-posta" data-en="Email" data-ru="Электронная почта" data-ar="البريد الإلكتروني">E-posta</label>
+                        <input type="email" class="form-control" name="email" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label data-tr="Makine Sayısı (Max 3)" data-en="Number of Machines (Max 3)" data-ru="Количество машин (Макс 3)" data-ar="عدد الآلات (الحد الأقصى 3)">Makine Sayısı (Max 3)</label>
+                            <select class="form-control" name="machines" required>
+                                <option value="">Seçiniz</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label data-tr="Desteklenen Protokoller" data-en="Supported Protocols" data-ru="Поддерживаемые протоколы" data-ar="البروتوكولات المدعومة">Desteklenen Protokoller</label>
+                            <div class="multi-select-container">
+                                <div class="multi-select-display form-control" id="protocolDisplay">
+                                    <span class="placeholder" data-tr="Protokol seçiniz..." data-en="Select protocols..." data-ru="Выберите протоколы..." data-ar="اختر البروتوكولات...">Protokol seçiniz...</span>
+                                    <span class="dropdown-arrow">▼</span>
+                                </div>
+                                <div class="multi-select-dropdown" id="protocolDropdown">
+                                    <label class="protocol-option">
+                                        <input type="checkbox" name="protocols" value="Siemens S7">
+                                        <span>Siemens S7</span>
+                                    </label>
+                                    <label class="protocol-option">
+                                        <input type="checkbox" name="protocols" value="Fanuc FOCAS">
+                                        <span>Fanuc FOCAS</span>
+                                    </label>
+                                    <label class="protocol-option">
+                                        <input type="checkbox" name="protocols" value="Mitsubishi M70/M80">
+                                        <span>Mitsubishi M70/M80</span>
+                                    </label>
+                                    <label class="protocol-option">
+                                        <input type="checkbox" name="protocols" value="Beckhoff TwinCat 2/3">
+                                        <span>Beckhoff TwinCat 2/3</span>
+                                    </label>
+                                    <label class="protocol-option">
+                                        <input type="checkbox" name="protocols" value="MODBUS TCP">
+                                        <span>MODBUS TCP</span>
+                                    </label>
+                                    <label class="protocol-option">
+                                        <input type="checkbox" name="protocols" value="OPC UA">
+                                        <span>OPC UA</span>
+                                    </label>
+                                    <label class="protocol-option">
+                                        <input type="checkbox" name="protocols" value="MQTT">
+                                        <span>MQTT</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label data-tr="Ek Bilgiler" data-en="Additional Information" data-ru="Дополнительная информация" data-ar="معلومات إضافية">Ek Bilgiler</label>
+                        <textarea class="form-control" name="notes" rows="4" data-tr-placeholder="Projeniz hakkında kısa bilgi..." data-en-placeholder="Brief information about your project..." data-ru-placeholder="Краткая информация о вашем проекте..." data-ar-placeholder="معلومات موجزة عن مشروعك..."></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn" data-tr="Başvuruyu Gönder" data-en="Submit Application" data-ru="Отправить заявку" data-ar="إرسال التطبيق">Başvuruyu Gönder</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <!-- Keep plain text in data attributes and insert safe link from JS to avoid parsed HTML inside attributes -->
+            <p class="footer-text" data-tr="© {YEAR} trex Digital Manufacturing. Tüm hakları saklıdır." data-en="© {YEAR} trex Digital Manufacturing. All rights reserved." data-ru="© {YEAR} trex Digital Manufacturing. Все права защищены." data-ar="© {YEAR} trex Digital Manufacturing. جميع الحقوق محفوظة.">© <span id="copyright-year"></span> <a href="https://trex.com.tr/" target="_blank" rel="noopener noreferrer">trex Digital Manufacturing</a>. Tüm hakları saklıdır.</p>
+        </div>
+    </footer>
+  <script>
+        // Language switching functionality
+        const languages = ['tr', 'en', 'ru', 'ar'];
+        let currentLanguage = 'tr';
+
+        // Language data
+        const translations = {
+            tr: {
+                title: 'trex Cloud Deneme Programı',
+                selectPlaceholder: 'Seçiniz'
+            },
+            en: {
+                title: 'trex Cloud Trial Program',
+                selectPlaceholder: 'Select'
+            },
+            ru: {
+                title: 'Пробная программа trex Cloud',
+                selectPlaceholder: 'Выберите'
+            },
+            ar: {
+                title: 'برنامج تجريبي trex Cloud',
+                selectPlaceholder: 'اختر'
+            }
+        };
+
+        function switchLanguage(lang) {
+            currentLanguage = lang;
+            
+            // Update document title
+            document.title = translations[lang].title;
+            
+            // Update HTML lang and dir attributes
+            document.documentElement.lang = lang;
+            document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+            
+            // Update all elements with data attributes
+            document.querySelectorAll('[data-' + lang + ']').forEach(element => {
+                const value = element.getAttribute('data-' + lang) || '';
+                // For footer-text, inject a safe anchor rather than trusting HTML in attributes
+                if (element.classList.contains('footer-text')) {
+                    const currentYear = new Date().getFullYear();
+                    const linkHTML = '<a href="https://trex.com.tr/" target="_blank" rel="noopener noreferrer">trex Digital Manufacturing</a>';
+                    let processedValue = value.replace('{YEAR}', currentYear);
+                    if (processedValue.includes('trex Digital Manufacturing')) {
+                        element.innerHTML = processedValue.replace('trex Digital Manufacturing', linkHTML);
+                    } else {
+                        element.innerHTML = processedValue + ' ' + linkHTML;
+                    }
+                } else {
+                    element.textContent = value;
+                }
+            });
+            
+            // Update placeholders
+            document.querySelectorAll('[data-' + lang + '-placeholder]').forEach(element => {
+                element.placeholder = element.getAttribute('data-' + lang + '-placeholder');
+            });
+            
+            // Update select options
+            const selectElement = document.querySelector('select[name="machines"]');
+            if (selectElement) {
+                selectElement.children[0].textContent = translations[lang].selectPlaceholder;
+            }
+            
+            // Update active language option
+            document.querySelectorAll('.lang-option').forEach(opt => {
+                opt.classList.remove('active');
+                if (opt.getAttribute('data-lang') === lang) {
+                    opt.classList.add('active');
+                    currentLangSpan.textContent = lang.toUpperCase();
+                }
+            });
+        }
+
+        // Language dropdown functionality
+        const langDropdown = document.getElementById('langDropdown');
+        const langDropdownMenu = document.getElementById('langDropdownMenu');
+        const currentLangSpan = document.getElementById('currentLang');
+
+        // Toggle dropdown
+        langDropdown.addEventListener('click', (e) => {
+            e.stopPropagation();
+            langDropdown.classList.toggle('active');
+            langDropdownMenu.classList.toggle('show');
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', () => {
+            langDropdown.classList.remove('active');
+            langDropdownMenu.classList.remove('show');
+        });
+
+        // Language option selection
+        document.querySelectorAll('.lang-option').forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const lang = e.target.getAttribute('data-lang');
+                const langText = e.target.textContent;
+                
+                // Update current language display
+                currentLangSpan.textContent = lang.toUpperCase();
+                
+                // Update active state
+                document.querySelectorAll('.lang-option').forEach(opt => opt.classList.remove('active'));
+                e.target.classList.add('active');
+                
+                // Switch language
+                switchLanguage(lang);
+                
+                // Close dropdown
+                langDropdown.classList.remove('active');
+                langDropdownMenu.classList.remove('show');
+            });
+        });
+
+        // Form submission with multiple data collection methods
+        document.getElementById('applicationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData);
+            
+            // Add selected protocols to data
+            data.protocols = selectedProtocols.join(', ');
+            
+            // Add timestamp and language
+            data.submissionTime = new Date().toISOString();
+            data.language = currentLanguage;
+            
+            console.log('Form submitted:', data);
+            
+            // Method 1: Email via mailto (opens email client)
+            sendViaEmail(data);
+            
+            // Method 2: Download as JSON file
+            downloadAsJSON(data);
+            
+            // Method 3: Copy to clipboard
+            copyToClipboard(data);
+            
+            // Show success modal with options
+            showSuccessModal();
+            
+            this.reset();
+            selectedProtocols = [];
+            updateDisplayText();
+        });
+
+        // Method 1: Email via mailto
+        function sendViaEmail(data) {
+            const subject = encodeURIComponent('trex Cloud Trial Program Application');
+            const body = encodeURIComponent(
+                `New Trial Program Application:\n\n` +
+                `Company: ${data.company}\n` +
+                `Industry: ${data.industry}\n` +
+                `Contact Person: ${data.contact}\n` +
+                `Phone: ${data.phone}\n` +
+                `Email: ${data.email}\n` +
+                `Number of Machines: ${data.machines}\n` +
+                `Protocols: ${data.protocols}\n` +
+                `Additional Notes: ${data.notes || 'None'}\n` +
+                `Submission Time: ${data.submissionTime}\n` +
+                `Language: ${data.language}`
+            );
+            
+            // Store email link for user to access
+            window.emailLink = `mailto:applications@trex.com.tr?subject=${subject}&body=${body}`;
+        }
+
+        // Method 2: Download as JSON
+        function downloadAsJSON(data) {
+            const jsonData = JSON.stringify(data, null, 2);
+            const blob = new Blob([jsonData], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            
+            window.downloadLink = url;
+            window.downloadFilename = `trex-application-${data.company.replace(/[^a-zA-Z0-9]/g, '_')}-${Date.now()}.json`;
+        }
+
+        // Method 3: Copy to clipboard
+        function copyToClipboard(data) {
+            const text = `trex Cloud Trial Program Application\n\n` +
+                        `Company: ${data.company}\n` +
+                        `Industry: ${data.industry}\n` +
+                        `Contact: ${data.contact}\n` +
+                        `Phone: ${data.phone}\n` +
+                        `Email: ${data.email}\n` +
+                        `Machines: ${data.machines}\n` +
+                        `Protocols: ${data.protocols}\n` +
+                        `Notes: ${data.notes || 'None'}\n` +
+                        `Submitted: ${data.submissionTime}`;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                console.log('Application data copied to clipboard');
+            }).catch(() => {
+                console.log('Clipboard copy failed, data available in console');
+            });
+        }
+
+        // Success modal with options
+        function showSuccessModal() {
+            const messages = {
+                tr: {
+                    title: 'Başvuru Gönderildi!',
+                    message: 'Başvurunuz başarıyla kaydedildi. Aşağıdaki seçeneklerden birini kullanarak bize gönderin:',
+                    email: 'E-posta Gönder',
+                    download: 'JSON İndir',
+                    copy: 'Panoya Kopyala',
+                    close: 'Kapat'
+                },
+                en: {
+                    title: 'Application Submitted!',
+                    message: 'Your application has been saved successfully. Use one of the options below to send it to us:',
+                    email: 'Send Email',
+                    download: 'Download JSON',
+                    copy: 'Copy to Clipboard',
+                    close: 'Close'
+                },
+                ru: {
+                    title: 'Заявка отправлена!',
+                    message: 'Ваша заявка успешно сохранена. Используйте один из вариантов ниже, чтобы отправить ее нам:',
+                    email: 'Отправить Email',
+                    download: 'Скачать JSON',
+                    copy: 'Копировать в буфер',
+                    close: 'Закрыть'
+                },
+                ar: {
+                    title: 'تم إرسال الطلب!',
+                    message: 'تم حفظ طلبك بنجاح. استخدم أحد الخيارات أدناه لإرساله إلينا:',
+                    email: 'إرسال بريد إلكتروني',
+                    download: 'تحميل JSON',
+                    copy: 'نسخ إلى الحافظة',
+                    close: 'إغلاق'
+                }
+            };
+
+            const msg = messages[currentLanguage];
+            
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+                background: rgba(0,0,0,0.8); display: flex; align-items: center; 
+                justify-content: center; z-index: 10000;
+            `;
+            
+            modal.innerHTML = `
+                <div style="background: white; padding: 2rem; border-radius: 10px; max-width: 500px; text-align: center;">
+                    <h3 style="color: var(--primary-green); margin-bottom: 1rem;">${msg.title}</h3>
+                    <p style="margin-bottom: 2rem; line-height: 1.6;">${msg.message}</p>
+                    <div style="display: grid; gap: 10px;">
+                        <button onclick="window.open(window.emailLink)" style="padding: 10px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer;">${msg.email}</button>
+                        <button onclick="downloadApplication()" style="padding: 10px; background: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer;">${msg.download}</button>
+                        <button onclick="copyApplication()" style="padding: 10px; background: #17a2b8; color: white; border: none; border-radius: 5px; cursor: pointer;">${msg.copy}</button>
+                        <button onclick="this.closest('div').style.display='none'" style="padding: 10px; background: #dc3545; color: white; border: none; border-radius: 5px; cursor: pointer; margin-top: 10px;">${msg.close}</button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            // Remove modal when clicking outside
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.remove();
+                }
+            });
+        }
+
+        // Helper functions for modal buttons
+        window.downloadApplication = function() {
+            const a = document.createElement('a');
+            a.href = window.downloadLink;
+            a.download = window.downloadFilename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        };
+
+        window.copyApplication = function() {
+            alert('Application data has been copied to clipboard!');
+        };
+
+
+
+
+
+        // Smooth scrolling for CTA button
+        document.querySelector('.cta-button').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('application').scrollIntoView({ 
+                behavior: 'smooth' 
+            });
+        });
+
+        // Multi-select Protocol Dropdown functionality
+        const protocolDisplay = document.getElementById('protocolDisplay');
+        const protocolDropdown = document.getElementById('protocolDropdown');
+        const protocolCheckboxes = document.querySelectorAll('input[name="protocols"]');
+        let selectedProtocols = [];
+
+        // Toggle dropdown
+        protocolDisplay.addEventListener('click', (e) => {
+            e.stopPropagation();
+            protocolDisplay.classList.toggle('active');
+            protocolDropdown.classList.toggle('show');
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.multi-select-container')) {
+                protocolDisplay.classList.remove('active');
+                protocolDropdown.classList.remove('show');
+            }
+        });
+
+        // Handle checkbox selection
+        protocolCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', updateSelectedProtocols);
+        });
+
+        function updateSelectedProtocols() {
+            selectedProtocols = Array.from(protocolCheckboxes)
+                .filter(cb => cb.checked)
+                .map(cb => cb.value);
+
+            updateDisplayText();
+        }
+
+        function updateDisplayText() {
+            const displayContent = protocolDisplay.querySelector('.selected-protocols') || 
+                                 protocolDisplay.querySelector('.placeholder');
+            
+            if (selectedProtocols.length === 0) {
+                const placeholderTexts = {
+                    tr: 'Protokol seçiniz...',
+                    en: 'Select protocols...',
+                    ru: 'Выберите протоколы...',
+                    ar: 'اختر البروتوكولات...'
+                };
+                
+                protocolDisplay.innerHTML = `
+                    <span class="placeholder">${placeholderTexts[currentLanguage]}</span>
+                    <span class="dropdown-arrow">▼</span>
+                `;
+            } else {
+                const tagsHtml = selectedProtocols.map(protocol => 
+                    `<span class="protocol-tag">
+                        ${protocol}
+                        <span class="remove" data-protocol="${protocol}">×</span>
+                    </span>`
+                ).join('');
+
+                protocolDisplay.innerHTML = `
+                    <div class="selected-protocols">${tagsHtml}</div>
+                    <span class="dropdown-arrow">▼</span>
+                `;
+
+                // Add remove functionality to tags
+                protocolDisplay.querySelectorAll('.remove').forEach(removeBtn => {
+                    removeBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const protocol = e.target.getAttribute('data-protocol');
+                        const checkbox = document.querySelector(`input[value="${protocol}"]`);
+                        if (checkbox) {
+                            checkbox.checked = false;
+                            updateSelectedProtocols();
+                        }
+                    });
+                });
+            }
+        }
+
+        // Update placeholder text when language changes
+        const originalSwitchLanguage = switchLanguage;
+        switchLanguage = function(lang) {
+            originalSwitchLanguage(lang);
+            if (selectedProtocols.length === 0) {
+                updateDisplayText();
+            }
+        };
+
+        // Set dynamic copyright year
+        document.getElementById('copyright-year').textContent = new Date().getFullYear();
+
+        // Initialize with Turkish
+        switchLanguage('tr');
+    </script>
+  
+</body>
+</html>
